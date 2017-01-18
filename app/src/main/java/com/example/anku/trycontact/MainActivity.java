@@ -3,8 +3,11 @@ package com.example.anku.trycontact;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +16,7 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -76,13 +80,43 @@ public class MainActivity extends Activity {
     private void getSelectedContacts() {
         // TODO Auto-generated method stub
         StringBuffer sb = new StringBuffer();
+        StringBuffer sb1=new StringBuffer();
         for (ContactObject bean : ContactsListClass.phoneList) {
             if (bean.isSelected()) {
                 sb.append(bean.getName());
+                sb1.append(bean.getNumber());
                 sb.append(",");
             }
         }
         String s = sb.toString().trim();
+        String s1=sb1.toString().trim();
+        String s2="";
+        int cnt=0;
+        int j;
+        for(j=s1.length()-1;j>=0;j--)
+        {
+           // Log.e("letter",s2);
+            if(s1.charAt(j)== 32)
+                continue;
+            else
+                s2=s2+s1.charAt(j);
+            cnt++;
+
+
+            if(cnt==10)break;
+        }
+//reversing the string
+       s2= new StringBuilder(s2).reverse().toString();
+      //  Log.e("letter",s2);
+        HashMap<String,String> map= new HashMap<String, String>();
+        map.put(s,s2);
+
+        for (HashMap.Entry<String,String> entry : map.entrySet()) {
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+
+
+
         if (TextUtils.isEmpty(s)) {
             Toast.makeText(context, "Select atleast one Contact",
                     Toast.LENGTH_SHORT).show();
